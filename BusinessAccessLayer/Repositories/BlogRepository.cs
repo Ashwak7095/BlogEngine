@@ -42,17 +42,24 @@ namespace BusinessAccessLayer.Repositories
         }
         public async Task<Blog> PostBlog(Blog blog)
         {
-            Blog blog1 = new Blog()
+            try
             {
-                Id = blog.Id,
-                Title = blog.Title,
-                Content = blog.Content,
-                CreatedAt = DateTime.Now,
-                UserId = blog.UserId
-            };
-            await _dbContext.Blogs.AddAsync(blog1);
-            await _dbContext.SaveChangesAsync();
-            return blog;
+                Blog blog1 = new Blog()
+                {
+                    Id = blog.Id,
+                    Title = blog.Title,
+                    Content = blog.Content,
+                    CreatedAt = DateTime.Now,
+                    UserId = blog.UserId
+                };
+                await _dbContext.Blogs.AddAsync(blog1);
+                await _dbContext.SaveChangesAsync();
+                return blog;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
         }
     }
 }
