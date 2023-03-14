@@ -12,12 +12,12 @@ namespace UserInterface_Layer.Controllers
     public class BlogController : ControllerBase
     {
         private readonly IBlogRepository _iBlogRepository;
-        private readonly ILogger<BlogController> _logger;
+        //private readonly ILogger<BlogController> _logger;
 
-        public BlogController(IBlogRepository iBlogRepository, ILogger<BlogController> logger)
+        public BlogController(IBlogRepository iBlogRepository)     // ILogger<BlogController> logger)
         {
             _iBlogRepository= iBlogRepository;
-            _logger= logger;
+            //_logger= logger;
         }
         [HttpGet("GetBlog")]
         public async Task<IActionResult> Get()
@@ -33,7 +33,8 @@ namespace UserInterface_Layer.Controllers
             }
             catch (Exception ex) 
             {
-                _logger.LogCritical(ex.Message, ex.InnerException, ex.StackTrace);
+                Console.WriteLine(ex.Message);
+                //_logger.LogCritical(ex.Message, ex.InnerException, ex.StackTrace);
             }
             return BadRequest();
         }
@@ -42,16 +43,17 @@ namespace UserInterface_Layer.Controllers
         {
             try
             {
-                var blg = _iBlogRepository.GetBlogById(id);
-                if (blg == null)
+                var b1 = _iBlogRepository.GetBlogById(id);
+                if (b1 == null)
                 {
                     return NotFound("Record Not Found");
                 }
-                return Ok(blg);
+                return Ok(b1);
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex.Message, ex.InnerException, ex.StackTrace);
+                Console.WriteLine(ex.Message);
+                // _logger.LogCritical(ex.Message, ex.InnerException, ex.StackTrace);
             }
             return BadRequest();
         }
@@ -69,7 +71,8 @@ namespace UserInterface_Layer.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex.Message, ex.InnerException, ex.StackTrace);
+                Console.WriteLine(ex.Message);
+                //_logger.LogCritical(ex.Message, ex.InnerException, ex.StackTrace);
             }
             return BadRequest();
         }
@@ -87,7 +90,8 @@ namespace UserInterface_Layer.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex.Message, ex.InnerException, ex.StackTrace);
+                Console.WriteLine(ex.Message);
+                //_logger.LogCritical(ex.Message, ex.InnerException, ex.StackTrace);
             }
             return BadRequest();
         }
@@ -101,7 +105,8 @@ namespace UserInterface_Layer.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex.Message, ex.InnerException, ex.StackTrace);
+                Console.WriteLine(ex.Message);
+                //_logger.LogCritical(ex.Message, ex.InnerException, ex.StackTrace);
             }
             return BadRequest();
         }

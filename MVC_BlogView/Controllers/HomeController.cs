@@ -1,19 +1,23 @@
-﻿using DataAccessLayer.Models;
-using Microsoft.AspNetCore.Mvc;
-using MVC_Blogs.Models;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using MVC_BlogView.Models;
 using System.Diagnostics;
-using System.Text;
 
-namespace MVC_Blogs.Controllers
+namespace MVC_BlogView.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
 
         public IActionResult Index()
         {
             return View();
         }
+
         public IActionResult Privacy()
         {
             return View();
