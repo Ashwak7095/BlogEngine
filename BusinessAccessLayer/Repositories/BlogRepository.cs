@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessAccessLayer.Repositories
 {
-    public class BlogRepository
+    public class BlogRepository:IBlogRepository
     {
         private readonly BlogDBContext _dbContext;
 
@@ -29,11 +29,11 @@ namespace BusinessAccessLayer.Repositories
                 throw new ArgumentException(ex.Message);
             }
         }
-        public async Task<Blog> GetBlogById(int Id)
+        public Blog GetBlogById(int Id)
         {
             try
             {
-                return await _dbContext.Blogs.FirstAsync(x => x.Id == Id);
+                return _dbContext.Blogs.FirstOrDefault(x => x.Id == Id);
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace BusinessAccessLayer.Repositories
                     Title = blog.Title,
                     Content = blog.Content,
                     CreatedAt = DateTime.Now,
-                    UserId = blog.UserId
+                    
                 };
                 await _dbContext.Blogs.AddAsync(blog1);
                 await _dbContext.SaveChangesAsync();
@@ -61,5 +61,25 @@ namespace BusinessAccessLayer.Repositories
                 throw new ArgumentException(ex.Message);
             }
         }
+        public Blog UpdateBlog(Blog blog)
+        {
+            try
+            {
+                _dbContext.Blogs.Add(blog);
+                _dbContext.SaveChanges();
+                return blog;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public void DeleteBlogById(int Id)
+        {
+            var getBlogDetailsById = GetBlogById(Id);
+            _dbContext.Blogs.Remove(getBlogDetailsById);
+            _dbContext.SaveChanges();
+        }
+
     }
 }

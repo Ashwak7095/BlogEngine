@@ -9,9 +9,10 @@ namespace BusinessAccessLayer.Repositories
 {
     public interface IBlogRepository
     {
-        Task<List<Blog>> GetCollege();
-        Task<Blog> GetBlogById(int Id);
-        Task<Blog> PostCollege(Blog blog);
-        Blog UpdateCollege(Blog blog);
+        Task<List<Blog>> GetBlog();
+        Blog GetBlogById(int Id);
+        Task<Blog> PostBlog(Blog blog);
+        Blog UpdateBlog(Blog blog);
+        void DeleteBlogById(int Id);
     }
 }
