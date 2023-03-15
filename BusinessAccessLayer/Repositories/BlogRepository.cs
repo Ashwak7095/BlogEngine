@@ -49,8 +49,7 @@ namespace BusinessAccessLayer.Repositories
                     Id = blog.Id,
                     Title = blog.Title,
                     Content = blog.Content,
-                    CreatedAt = DateTime.Now,
-                    
+                    CreatedAt = DateTime.Now                 
                 };
                 await _dbContext.Blogs.AddAsync(blog1);
                 await _dbContext.SaveChangesAsync();
@@ -65,7 +64,7 @@ namespace BusinessAccessLayer.Repositories
         {
             try
             {
-                _dbContext.Blogs.Add(blog);
+                _dbContext.Blogs.Update(blog);
                 _dbContext.SaveChanges();
                 return blog;
             }

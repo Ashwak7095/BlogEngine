@@ -7,15 +7,14 @@ namespace MVC_Blogs.Controllers
 {
     public class BlogController : Controller
     {
-        
 
-        public HttpClient client = new HttpClient();
+        HttpClient client = new HttpClient();
         Blog blogs;
 
-        public IActionResult Index()
+        public IActionResult Index1()
         {
             List<Blog> blogs = new List<Blog>();
-            client.BaseAddress = new Uri("https://localhost:44345/");
+            client.BaseAddress = new Uri(URL.WebApiUrl);
             var response = client.GetAsync("api/Blog/GetBlog").Result;
 
             if (response.IsSuccessStatusCode)
@@ -25,7 +24,6 @@ namespace MVC_Blogs.Controllers
             }
             return View(blogs);
         }
-
         public IActionResult Create()
         {
             return View();
@@ -34,7 +32,7 @@ namespace MVC_Blogs.Controllers
         public IActionResult Create(Blog blog)
         {
 
-            client.BaseAddress = new Uri("https://localhost:44345/");
+            client.BaseAddress = new Uri(URL.WebApiUrl);
             Blog blog1 = new Blog()
             {
                 Id = blog.Id,
@@ -53,10 +51,10 @@ namespace MVC_Blogs.Controllers
             return View();
 
         }
-
-        public IActionResult Details(int id)   //https://localhost:44345/api/Blog/GetByIdBlog?id=17
+        [HttpGet]
+        public IActionResult Details(int id)   
         {
-            client.BaseAddress = new Uri("https://localhost:44345/");
+            client.BaseAddress = new Uri(URL.WebApiUrl);
             var response = client.GetAsync("api/Blog/GetByIdBlog?id=" + id).Result;
 
             if (response.IsSuccessStatusCode)
@@ -65,11 +63,55 @@ namespace MVC_Blogs.Controllers
             }
             return View(blogs);   
         }
-
-
-        public ActionResult Delete(int id)   //https://localhost:44345/api/Blog/DeleteBlog?id=21
+        
+        public IActionResult Edit(int id)
         {
-            client.BaseAddress = new Uri("https://localhost:44345/");
+
+            client.BaseAddress = new Uri(URL.WebApiUrl);
+            var response = client.GetAsync("api/Blog/GetByIdBlog?id=" + id).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                blogs = response.Content.ReadAsAsync<Blog>().Result;
+            }
+            return View(blogs);
+        }
+
+        //[HttpPost]
+        //public IActionResult Edit([FromBody] Blog blog)     
+        //{
+        //    client.BaseAddress = new Uri(URL.WebApiUrl);
+        //    Blog blog1 = new Blog()
+        //    {
+        //        Id = blog.Id,
+        //        Title = blog.Title,
+        //        Content = blog.Content,
+        //        CreatedAt = DateTime.Now
+        //    };
+
+        //    string strPayload = JsonConvert.SerializeObject(blog1);
+        //    HttpContent context = new StringContent(strPayload, Encoding.UTF8, "application/json");
+        //    var response = client.PutAsJsonAsync("api/Blog/UpdateBlog", context).Result;
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View();
+        //}
+
+
+
+
+
+
+
+
+
+
+
+        [HttpDelete]
+        public ActionResult Delete(int id)   
+        {
+            client.BaseAddress = new Uri(URL.WebApiUrl);
             var response = client.DeleteAsync("api/Blog/DeleteBlog?id=" + id).Result;
 
             if (response.IsSuccessStatusCode)
