@@ -26,8 +26,6 @@ namespace XUnit_TestCases
             };
         }
 
-       
-
         public Task<List<Blog>> GetBlog()
         {
             return Task.FromResult(blogs.ToList());

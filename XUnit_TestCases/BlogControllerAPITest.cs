@@ -16,10 +16,12 @@ namespace XUnit_TestCases
     {
         private readonly Mock<BlogMockService> _iBlogService;
         private readonly BlogController _controller;
+        private readonly Mock<ILogger<BlogController>> _logger;
         public BlogControllerAPITest()
         {
             _iBlogService = new Mock<BlogMockService>();
-            _controller = new BlogController(_iBlogService.Object);
+            _logger = new Mock<ILogger<BlogController>>();
+            _controller = new BlogController(_iBlogService.Object,_logger.Object);
         }
         [Fact]
         public async Task GetAllBlogReturnOkResult()

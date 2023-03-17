@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.DBContext
 {
-    public class BlogDBContext:DbContext
+    public class BlogDBContext:IdentityDbContext<IdentityUser>
     {
         public BlogDBContext(DbContextOptions<BlogDBContext> options)
          : base(options)
@@ -18,6 +18,9 @@ namespace DataAccessLayer.DBContext
         }
 
         public DbSet<Blog> Blogs { get; set; }
+        public DbSet<PostModel> PostModels { get; set; }
+
+        //public DbSet<Publish> Publishes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
              => optionsBuilder.UseSqlServer("Data Source=MLI01093;Initial Catalog=BlogDB;Integrated Security=True;TrustServerCertificate=True");

@@ -60,24 +60,75 @@ namespace UserInterface_Layer.Controllers
         }
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] Register model)
+        public async Task<string> Register(Register model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.Username);
-            if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
-
-            IdentityUser user = new()
-            {
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
-
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            
+                //_logger.LogInformation("User Register");
+                //_logger.LogDebug(model.Email, model.Username, model.Password);
+                var userExists = await _userManager.FindByNameAsync(model.Username);
+                if (userExists != null)
+                {
+                    return "User Already Exists";
+                }
+                IdentityUser user = new IdentityUser()
+                {
+                    Email = model.Email,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    UserName = model.Username
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (!result.Succeeded)
+                {
+                    return "User creation failed! Please check user details and try again.";
+                }
+                if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+                    await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+                if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+                    await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+                //if (!await _roleManager.RoleExistsAsync(UserRoles.Employee))
+                //    await _roleManager.CreateAsync(new IdentityRole(UserRoles.Employee));
+                switch (model.Role)
+                {
+                    case "Admin":
+                        await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+                        break;
+                    case "User":
+                        await _userManager.AddToRoleAsync(user, UserRoles.User);
+                        break;
+                    //case "Master":
+                    //    await _userManager.AddToRoleAsync(user, UserRoles.Employee);  
+                    //    break;
+                    default:
+                        await _userManager.AddToRoleAsync(user, UserRoles.User);
+                        break;
+                }
+                return "User Created Sucessfully";
+ 
+           
         }
+
+
+
+
+
+        //public async Task<IActionResult> Register([FromBody] Register model)
+        //{
+        //    var userExists = await _userManager.FindByNameAsync(model.Username);
+        //    if (userExists != null)
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+
+        //    IdentityUser user = new()
+        //    {
+        //        Email = model.Email,
+        //        SecurityStamp = Guid.NewGuid().ToString(),
+        //        UserName = model.Username
+        //    };
+        //    var result = await _userManager.CreateAsync(user, model.Password);
+        //    if (!result.Succeeded)
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+
+        //    return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+        //}
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
