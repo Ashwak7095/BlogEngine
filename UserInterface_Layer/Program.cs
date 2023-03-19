@@ -20,10 +20,16 @@ builder.Logging.AddSerilog(logger);
 
 
 
+
+
 // Add services to the container.
 builder.Services.AddDbContext<BlogDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddTransient<IBlogRepository, BlogRepository>();
 builder.Services.AddTransient<IPostRepository, PostRepository>();
+
+
+
+
 
 //For Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
@@ -86,7 +92,15 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+
+
+
+
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -95,11 +109,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+//app.UseSession();
 
 app.MapControllers();
 

@@ -9,5 +9,6 @@
         public const string UpdateBlog = "api/Blog/UpdateBlog";
         public const string DeleteBlog = "api/Blog/DeleteBlog?id=";
         public const string Login = "api/Authentication/login Model";
+        public const string Register = "api/Authentication/register";
     }
 }

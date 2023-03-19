@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace UserInterface_Layer.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BlogController : ControllerBase
