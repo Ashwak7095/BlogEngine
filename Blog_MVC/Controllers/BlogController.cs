@@ -117,27 +117,27 @@ namespace Blog_MVC.Controllers
         }
 
 
-        //public IActionResult Delete(int id)
-        //{
-        //    var response = client.GetAsync(URL.WebApiUrl + URL.GetByIdBlog + id).Result;
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        blogs = response.Content.ReadAsAsync<Blog>().Result;
-        //    }
-        //    return View(blogs);
-        //}
+        public IActionResult Delete(int id)
+        {
+            var response = client.GetAsync(URL.WebApiUrl + URL.GetByIdBlog + id).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                blogs = response.Content.ReadAsAsync<Blog>().Result;
+            }
+            return View(blogs);
+        }
 
 
-        //[HttpPost, ActionName("Delete")]
-        //public IActionResult DeleteConfirmed(int id)
-        //{
-        //    var response = client.DeleteAsync(URL.WebApiUrl + URL.DeleteBlog + id).Result;
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        blogs = response.Content.ReadAsAsync<Blog>().Result;
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View();
-        //}
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var response = client.DeleteAsync(URL.WebApiUrl + URL.DeleteBlog + id).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                blogs = response.Content.ReadAsAsync<Blog>().Result;
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
     }
 }
