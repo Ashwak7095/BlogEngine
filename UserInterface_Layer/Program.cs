@@ -20,14 +20,10 @@ builder.Logging.AddSerilog(logger);
 
 
 
-
-
 // Add services to the container.
 builder.Services.AddDbContext<BlogDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddTransient<IBlogRepository, BlogRepository>();
 builder.Services.AddTransient<IPostRepository, PostRepository>();
-
-
 
 
 
@@ -94,10 +90,6 @@ builder.Services.AddSwaggerGen(c =>
 
 
 
-
-
-
-
 var app = builder.Build();
 
 
@@ -115,8 +107,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
-
-//app.UseSession();
 
 app.MapControllers();
 

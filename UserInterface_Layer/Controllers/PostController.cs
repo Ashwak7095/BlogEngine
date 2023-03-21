@@ -12,12 +12,19 @@ namespace UserInterface_Layer.Controllers
     {
         private readonly IPostRepository _iPostRepository;
         private readonly ILogger<PostController> _logger;
+        private IPostRepository @object;
 
         public PostController(IPostRepository iPostRepository, ILogger<PostController> logger)
         {
             _iPostRepository = iPostRepository;
             _logger = logger;
         }
+
+        public PostController(IPostRepository @object)
+        {
+            this.@object = @object;
+        }
+
         [HttpGet("GetPost")]
         public async Task<IActionResult> Get()
         {
